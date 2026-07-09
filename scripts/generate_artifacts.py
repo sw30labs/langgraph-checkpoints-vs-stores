@@ -7,6 +7,7 @@ import html
 import json
 import sys
 from pathlib import Path
+from copy import deepcopy
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +29,26 @@ from checkpoints_vs_stores.utils import compact_json  # noqa: E402
 ARTIFACTS = ROOT / "artifacts"
 SAMPLE_OUTPUT = ARTIFACTS / "sample-output"
 ASSETS = ROOT / "docs" / "assets"
+
+
+
+
+def normalize_volatile_values(data: Any) -> Any:
+    """Redact timestamps and generated checkpoint ids for stable committed artifacts."""
+
+    if isinstance(data, dict):
+        normalized: dict[str, Any] = {}
+        for key, value in data.items():
+            if key == "latest_checkpoint_id":
+                normalized[key] = "<checkpoint-id>"
+            elif key in {"created_at", "updated_at"}:
+                normalized[key] = "<timestamp>"
+            else:
+                normalized[key] = normalize_volatile_values(value)
+        return normalized
+    if isinstance(data, list):
+        return [normalize_volatile_values(item) for item in data]
+    return data
 
 
 COMPARISON_ROWS = [
@@ -106,9 +127,9 @@ def terminal_svg(lines: list[str]) -> str:
 
 
 def main() -> int:
-    checkpoint = run_checkpoint_story()
-    store = run_store_story()
-    combined = run_combined_story()
+    checkpoint = normalize_volatile_values(deepcopy(run_checkpoint_story()))
+    store = normalize_volatile_values(deepcopy(run_store_story()))
+    combined = normalize_volatile_values(deepcopy(run_combined_story()))
 
     write_text(SAMPLE_OUTPUT / "checkpoint_demo.txt", format_checkpoint_story(checkpoint))
     write_text(SAMPLE_OUTPUT / "store_demo.txt", format_store_story(store))

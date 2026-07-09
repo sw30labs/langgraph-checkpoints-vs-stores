@@ -1,6 +1,6 @@
 {
   "checkpoint": {
-    "latest_checkpoint_id": "1f17bdf3-c1d2-61d8-8006-c33e1943b5c3",
+    "latest_checkpoint_id": "<checkpoint-id>",
     "lesson": "Checkpoints are scoped to a thread_id.",
     "thread_alpha_checkpoint_count": 8,
     "thread_alpha_facts": [
@@ -20,14 +20,14 @@
     "lesson": "Use both: checkpoint for per-thread state, store for durable memory.",
     "shared_store_items": [
       {
-        "created_at": "2026-07-09 21:43:34.182137+00:00",
+        "created_at": "<timestamp>",
         "key": "favorite_language",
         "namespace": [
           "user-ada",
           "profile"
         ],
         "score": null,
-        "updated_at": "2026-07-09 21:43:34.182138+00:00",
+        "updated_at": "<timestamp>",
         "value": {
           "value": "Python",
           "why": "Captured from an explicit user preference."
@@ -63,14 +63,14 @@
     "thread_c_reply_different_user": "I don't have a favorite language for this user in the Store.",
     "user_ada_store_items": [
       {
-        "created_at": "2026-07-09 21:43:34.173835+00:00",
+        "created_at": "<timestamp>",
         "key": "favorite_language",
         "namespace": [
           "user-ada",
           "profile"
         ],
         "score": null,
-        "updated_at": "2026-07-09 21:43:34.173836+00:00",
+        "updated_at": "<timestamp>",
         "value": {
           "value": "Python",
           "why": "Captured from an explicit user preference."

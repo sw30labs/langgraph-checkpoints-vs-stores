@@ -32,7 +32,7 @@
 <text x="42" y="356" class="line"></text>
 <text x="42" y="378" class="line">thread-alpha facts: [&#x27;name=Ada&#x27;]</text>
 <text x="42" y="400" class="line">thread-alpha checkpoint count: 8</text>
-<text x="42" y="422" class="line">latest checkpoint id: 1f17bdf3-c1d2-61d8-8006-c33e1943b5c3</text>
+<text x="42" y="422" class="line">latest checkpoint id: &lt;checkpoint-id&gt;</text>
 <text x="42" y="444" class="line"></text>
 <text x="42" y="466" class="line">Timeline:</text>
 <text x="42" y="488" class="line">  - USER: hi, my name is Ada</text>

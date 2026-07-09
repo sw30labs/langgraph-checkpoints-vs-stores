@@ -13,7 +13,7 @@ thread-fresh / invoke #1:
 
 thread-alpha facts: ['name=Ada']
 thread-alpha checkpoint count: 8
-latest checkpoint id: 1f17bdf3-c1d2-61d8-8006-c33e1943b5c3
+latest checkpoint id: <checkpoint-id>
 
 Timeline:
   - USER: hi, my name is Ada
