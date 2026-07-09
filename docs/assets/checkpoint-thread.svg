@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-label="Checkpoint thread demo">
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#09090f"/>
+    <stop offset="50%" stop-color="#14142a"/>
+    <stop offset="100%" stop-color="#071b24"/>
+  </linearGradient>
+  <linearGradient id="checkpoint" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#22d3ee"/>
+  </linearGradient>
+  <linearGradient id="store" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#10b981"/>
+    <stop offset="100%" stop-color="#facc15"/>
+  </linearGradient>
+  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+    <feMerge>
+      <feMergeNode in="coloredBlur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+  <style>
+    .title{font-family:Inter,Arial,sans-serif;font-size:34px;font-weight:800;fill:#f8fafc}
+    .sub{font-family:Inter,Arial,sans-serif;font-size:16px;fill:#cbd5e1}
+    .label{font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:700;fill:#f8fafc}
+    .small{font-family:Inter,Arial,sans-serif;font-size:13px;fill:#dbeafe}
+    .tiny{font-family:Inter,Arial,sans-serif;font-size:11px;fill:#94a3b8}
+    .box{rx:18;stroke:#334155;stroke-width:1.2;filter:url(#glow)}
+    .arrow{stroke:#cbd5e1;stroke-width:3;fill:none;marker-end:url(#arrow)}
+  </style>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+  </marker>
+</defs>
+
+<rect width="1100" height="520" fill="url(#bg)"/>
+<text x="55" y="70" class="title">Checkpoint = thread-scoped autosave</text>
+<text x="55" y="102" class="sub">Same thread_id recalls state. Different thread_id starts clean.</text>
+
+<rect x="60" y="165" width="220" height="95" fill="#1e1b4b" class="box"/>
+<text x="92" y="205" class="label">Invoke #1</text>
+<text x="92" y="232" class="small">“my name is Ada”</text>
+<path d="M280 212 L390 212" class="arrow"/>
+<rect x="390" y="150" width="270" height="125" fill="url(#checkpoint)" opacity="0.88" class="box"/>
+<text x="425" y="196" class="label">checkpoint thread-alpha</text>
+<text x="425" y="226" class="small">facts = [name=Ada]</text>
+<text x="425" y="250" class="small">timeline += user + bot</text>
+<path d="M660 212 L780 212" class="arrow"/>
+<rect x="780" y="165" width="250" height="95" fill="#0f172a" class="box"/>
+<text x="815" y="205" class="label">Invoke #2</text>
+<text x="815" y="232" class="small">“what is my name?” → Ada</text>
+
+<rect x="390" y="340" width="270" height="95" fill="#111827" stroke="#334155" class="box"/>
+<text x="430" y="380" class="label">thread-fresh</text>
+<text x="430" y="407" class="small">no previous checkpoint lineage</text>
+<path d="M780 388 L660 388" class="arrow"/>
+<text x="725" y="360" class="tiny">new thread_id</text>
+</svg>

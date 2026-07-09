@@ -1,0 +1,9 @@
+flowchart LR
+  U[User message] --> G[LangGraph]
+  G --> N1[Node: extract fact]
+  N1 --> N2[Node: answer]
+  N2 --> C[(Checkpointer)]
+  C --> T[thread_id = thread-alpha]
+  T --> S1[Saved StateSnapshot]
+  S1 --> R[Next invoke with same thread resumes state]
+  F[thread_id = thread-fresh] -. separate lineage .-> X[No old facts]

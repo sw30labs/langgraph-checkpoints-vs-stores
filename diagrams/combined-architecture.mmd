@@ -1,0 +1,15 @@
+flowchart TB
+  subgraph ThreadScoped[Checkpoint layer]
+    CP[(Checkpointer)]
+    CP --> TH1[thread-alpha snapshots]
+    CP --> TH2[thread-beta snapshots]
+  end
+  subgraph CrossThread[Store layer]
+    ST[(Store)]
+    ST --> U1[user-ada/profile]
+    ST --> U2[user-grace/profile]
+  end
+  Graph[LangGraph app] --> CP
+  Graph --> ST
+  User[Runtime context: user_id] --> Graph
+  Config[Config: thread_id] --> Graph

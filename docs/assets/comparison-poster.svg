@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Comparison poster">
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#09090f"/>
+    <stop offset="50%" stop-color="#14142a"/>
+    <stop offset="100%" stop-color="#071b24"/>
+  </linearGradient>
+  <linearGradient id="checkpoint" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#22d3ee"/>
+  </linearGradient>
+  <linearGradient id="store" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#10b981"/>
+    <stop offset="100%" stop-color="#facc15"/>
+  </linearGradient>
+  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+    <feMerge>
+      <feMergeNode in="coloredBlur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+  <style>
+    .title{font-family:Inter,Arial,sans-serif;font-size:34px;font-weight:800;fill:#f8fafc}
+    .sub{font-family:Inter,Arial,sans-serif;font-size:16px;fill:#cbd5e1}
+    .label{font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:700;fill:#f8fafc}
+    .small{font-family:Inter,Arial,sans-serif;font-size:13px;fill:#dbeafe}
+    .tiny{font-family:Inter,Arial,sans-serif;font-size:11px;fill:#94a3b8}
+    .box{rx:18;stroke:#334155;stroke-width:1.2;filter:url(#glow)}
+    .arrow{stroke:#cbd5e1;stroke-width:3;fill:none;marker-end:url(#arrow)}
+  </style>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+  </marker>
+</defs>
+
+<rect width="1200" height="675" fill="url(#bg)"/>
+<text x="60" y="72" class="title">Checkpoints vs Stores</text>
+<text x="60" y="104" class="sub">One saves the graph's place. The other saves durable application memory.</text>
+
+<rect x="70" y="155" width="500" height="420" fill="#111827" stroke="#334155" rx="24"/>
+<rect x="630" y="155" width="500" height="420" fill="#111827" stroke="#334155" rx="24"/>
+<rect x="70" y="155" width="500" height="74" fill="url(#checkpoint)" rx="24" opacity="0.9"/>
+<rect x="630" y="155" width="500" height="74" fill="url(#store)" rx="24" opacity="0.9"/>
+<text x="115" y="202" class="label">CHECKPOINTS</text>
+<text x="675" y="202" class="label">STORES</text>
+
+<text x="115" y="275" class="small">• Persists graph StateSnapshot</text>
+<text x="115" y="315" class="small">• Scoped to one thread_id</text>
+<text x="115" y="355" class="small">• Great for resume + time travel</text>
+<text x="115" y="395" class="small">• LangGraph writes it for you</text>
+<text x="115" y="435" class="small">• Example: “Ada” in thread-alpha</text>
+
+<text x="675" y="275" class="small">• Persists arbitrary key-value data</text>
+<text x="675" y="315" class="small">• Namespaced across threads</text>
+<text x="675" y="355" class="small">• Great for durable user memory</text>
+<text x="675" y="395" class="small">• Your nodes decide what to save</text>
+<text x="675" y="435" class="small">• Example: favorite_language=Python</text>
+
+<rect x="320" y="595" width="560" height="45" fill="#020617" stroke="#334155" rx="18"/>
+<text x="365" y="624" class="small">Real apps usually use both: checkpoint for the thread, store for durable memory.</text>
+</svg>

@@ -1,0 +1,9 @@
+flowchart LR
+  A[Thread A] --> G[Graph node]
+  G --> P[Store put]
+  P --> NS[(Namespace: user-ada/profile)]
+  NS --> K[favorite_language = Python]
+  B[Thread B] --> G2[Graph node]
+  G2 --> Q[Store get]
+  Q --> NS
+  C[Thread C, user-grace] -. different namespace .-> Empty[No memory]
