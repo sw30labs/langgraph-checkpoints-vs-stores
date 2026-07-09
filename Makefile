@@ -22,5 +22,6 @@ artifacts:
 	python scripts/generate_artifacts.py
 
 clean:
-	rm -rf .pytest_cache .ruff_cache htmlcov .coverage build dist *.egg-info
+	rm -rf .pytest_cache .ruff_cache htmlcov .coverage build dist
+	find . -type d -name "*.egg-info" -prune -exec rm -rf {} +
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
