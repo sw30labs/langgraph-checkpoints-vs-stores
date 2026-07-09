@@ -80,7 +80,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "[bold]LangGraph persistence demo[/bold]\n"
             "Checkpoints save the graph's place; stores save durable memories.",
             title="checkpoints-vs-stores",
-            border_style="cyan" if not args.no_color else None,
+            border_style="cyan" if not args.no_color else "default",
         )
     )
     console.print(render_text(results))
