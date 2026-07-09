@@ -13,6 +13,13 @@ variables:
     - python -m pip install --upgrade pip
     - python -m pip install -e ".[dev]"
 
+lint:
+  extends: .python_job
+  stage: test
+  script:
+    - ruff check src tests scripts
+    - ruff format --check src tests scripts
+
 unit_tests:
   extends: .python_job
   stage: test
@@ -30,4 +37,3 @@ render_demo_artifacts:
     expire_in: 14 days
     paths:
       - artifacts/
-      - docs/assets/

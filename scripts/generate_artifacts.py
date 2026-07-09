@@ -1,13 +1,12 @@
-"""Generate demo outputs, comparison matrix, and SVG terminal artifact."""
+"""Generate demo outputs, comparison matrix, and demo summary JSON."""
 
 from __future__ import annotations
 
 import csv
-import html
 import json
 import sys
-from pathlib import Path
 from copy import deepcopy
+from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,9 +27,6 @@ from checkpoints_vs_stores.utils import compact_json  # noqa: E402
 
 ARTIFACTS = ROOT / "artifacts"
 SAMPLE_OUTPUT = ARTIFACTS / "sample-output"
-ASSETS = ROOT / "docs" / "assets"
-
-
 
 
 def normalize_volatile_values(data: Any) -> Any:
@@ -93,39 +89,6 @@ def write_comparison_csv(path: Path) -> None:
         writer.writerows(COMPARISON_ROWS)
 
 
-def terminal_svg(lines: list[str]) -> str:
-    visible_lines = lines[:24]
-    height = 96 + len(visible_lines) * 22
-    escaped_lines = [html.escape(line) for line in visible_lines]
-    text_nodes = "\n".join(
-        f'<text x="42" y="{92 + index * 22}" class="line">{line}</text>'
-        for index, line in enumerate(escaped_lines)
-    )
-    return f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="{height}" viewBox="0 0 1100 {height}" role="img" aria-label="Demo terminal output">
-  <defs>
-    <linearGradient id="termBg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#020617"/>
-      <stop offset="100%" stop-color="#111827"/>
-    </linearGradient>
-    <style>
-      .chrome{{fill:#0f172a;stroke:#334155;stroke-width:1.2}}
-      .dot1{{fill:#ef4444}} .dot2{{fill:#f59e0b}} .dot3{{fill:#22c55e}}
-      .title{{font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:700;fill:#cbd5e1}}
-      .line{{font-family:'JetBrains Mono','Fira Code',monospace;font-size:14px;fill:#d1fae5}}
-    </style>
-  </defs>
-  <rect width="1100" height="{height}" fill="url(#termBg)" rx="24"/>
-  <rect x="22" y="22" width="1056" height="44" class="chrome" rx="16"/>
-  <circle cx="52" cy="44" r="7" class="dot1"/>
-  <circle cx="76" cy="44" r="7" class="dot2"/>
-  <circle cx="100" cy="44" r="7" class="dot3"/>
-  <text x="132" y="49" class="title">python -m checkpoints_vs_stores.demo all --no-color</text>
-  {text_nodes}
-</svg>
-""".strip()
-
-
 def main() -> int:
     checkpoint = normalize_volatile_values(deepcopy(run_checkpoint_story()))
     store = normalize_volatile_values(deepcopy(run_store_story()))
@@ -143,16 +106,7 @@ def main() -> int:
     write_text(ARTIFACTS / "demo-summary.json", compact_json(summary))
     write_comparison_csv(ARTIFACTS / "comparison-matrix.csv")
 
-    all_output = "\n\n".join(
-        [
-            format_checkpoint_story(checkpoint),
-            format_store_story(store),
-            format_combined_story(combined),
-        ]
-    )
-    write_text(ASSETS / "terminal-demo.svg", terminal_svg(all_output.splitlines()))
-
-    print(json.dumps({"generated": str(ARTIFACTS), "assets": str(ASSETS)}, indent=2))
+    print(json.dumps({"generated": str(ARTIFACTS)}, indent=2))
     return 0
 
 

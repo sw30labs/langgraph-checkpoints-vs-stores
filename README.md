@@ -1,179 +1,199 @@
-# ⚡ LangGraph Checkpoints vs Stores
+# LangGraph Checkpoints vs Stores
 
-<p align="center">
-  <img src="docs/assets/comparison-poster.svg" alt="Checkpoints vs Stores comparison poster" width="100%">
-</p>
+Runnable, deterministic examples that show the difference between LangGraph
+**checkpoints** (thread-scoped graph state) and **stores** (cross-thread,
+long-term memory), using real `StateGraph`, `InMemorySaver`, and
+`InMemoryStore` code, with tests and CI.
 
-<p align="center">
-  <img alt="GitLab ready" src="https://img.shields.io/badge/GitLab-ready-fc6d26?style=for-the-badge&logo=gitlab&logoColor=white">
-  <img alt="LangGraph" src="https://img.shields.io/badge/LangGraph-1.2.8-22d3ee?style=for-the-badge">
-  <img alt="No API keys" src="https://img.shields.io/badge/API%20keys-not%20needed-10b981?style=for-the-badge">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-pytest-7c3aed?style=for-the-badge">
-</p>
-
-A polished, runnable GitLab-ready repo that demonstrates the difference between LangGraph **checkpoints** and **stores** with real code, generated artifacts, diagrams, tests, and CI.
-
-The demos are deterministic: **no LLM calls, no API keys, no cloud dependency**. They use real LangGraph primitives: `StateGraph`, `InMemorySaver`, `InMemoryStore`, `thread_id`, and runtime store access.
-
----
+No LLM calls and no API keys: everything runs offline. Every output quoted
+below is captured from a real run by
+[`scripts/generate_artifacts.py`](scripts/generate_artifacts.py), with only
+volatile values (checkpoint ids, timestamps) redacted.
 
 ## The difference in one screen
 
 | Question | Checkpoints | Stores |
 |---|---|---|
 | What is saved? | Graph state snapshots | Application-defined key-value data |
-| Scope | One `thread_id` | Cross-thread namespace, for example `(user_id, "profile")` |
-| Who writes it? | LangGraph runtime via the checkpointer | Your graph nodes / app code |
+| Scope | One `thread_id` | Cross-thread namespace, e.g. `(user_id, "profile")` |
+| Who writes it? | LangGraph runtime, via the checkpointer | Your graph nodes / app code |
 | Best for | Resume, chat continuity, time travel, interrupts, fault tolerance | User facts, preferences, memories, shared knowledge |
-| Demo proof | `thread-alpha` remembers Ada; `thread-fresh` does not | `thread-b` recalls Python for `user-ada`; `user-grace` does not |
 
-> Rule: use **checkpoints** to save where this graph thread is. Use **stores** to save durable memory outside the thread.
+```text
+thread_id ──▶ checkpointer ──▶ "Where is this graph thread right now?"
+user_id   ──▶ store        ──▶ "What durable facts do we know about this user?"
+```
 
----
-
-## Visual architecture
-
-<p align="center">
-  <img src="docs/assets/architecture.svg" alt="Architecture showing checkpoint and store persistence layers" width="100%">
-</p>
-
-<table>
-<tr>
-<td width="50%"><img src="docs/assets/checkpoint-thread.svg" alt="Checkpoint thread scoped diagram"></td>
-<td width="50%"><img src="docs/assets/store-cross-thread.svg" alt="Store cross thread diagram"></td>
-</tr>
-</table>
-
----
+Use **checkpoints** to save where this graph thread is. Use **stores** to save
+durable memory outside the thread.
 
 ## Quickstart
 
-```bash
-git clone <your-gitlab-url>/langgraph-checkpoints-vs-stores.git
-cd langgraph-checkpoints-vs-stores
+One command — creates `.venv`, installs, lints, tests, and runs every demo:
 
+```bash
+./setup_and_run.sh
+```
+
+Or step by step:
+
+```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
 
-python -m checkpoints_vs_stores.demo all
+python -m checkpoints_vs_stores.demo all   # or: lg-memory-demo all
 pytest
 ```
 
-Or use the Makefile:
+Or with the Makefile: `make install`, `make demo`, `make test`,
+`make artifacts`.
 
-```bash
-make install
-make demo
-make test
-make artifacts
-```
-
----
-
-## Run the demos
-
-### 1. Checkpoint demo
+## Demo 1: checkpoints are scoped to a thread
 
 ```bash
 python -m checkpoints_vs_stores.demo checkpoint
 ```
 
-What it proves:
+Output (from
+[`artifacts/sample-output/checkpoint_demo.txt`](artifacts/sample-output/checkpoint_demo.txt)):
 
-- Invoke #1 on `thread-alpha`: user says `my name is Ada`.
-- Invoke #2 on the same `thread_id`: the graph recalls Ada from checkpointed thread state.
-- Invoke #1 on `thread-fresh`: the graph does not know Ada because it is a different checkpoint lineage.
+```text
+thread-alpha / invoke #1:
+  Checkpoint now has 1 durable-in-thread fact(s).
+
+thread-alpha / invoke #2:
+  Your name is Ada. I know because this thread has a checkpoint.
+
+thread-fresh / invoke #1:
+  I don't know your name in this thread.
+```
+
+The second invoke on `thread-alpha` recalls Ada from checkpointed thread
+state. `thread-fresh` knows nothing, because it is a separate checkpoint
+lineage.
+
+```mermaid
+flowchart LR
+  U[User message] --> G[LangGraph]
+  G --> N1[Node: extract fact]
+  N1 --> N2[Node: answer]
+  N2 --> C[(Checkpointer)]
+  C --> T[thread_id = thread-alpha]
+  T --> S1[Saved StateSnapshot]
+  S1 --> R[Next invoke with same thread resumes state]
+  F[thread_id = thread-fresh] -. separate lineage .-> X[No old facts]
+```
 
 Code: [`src/checkpoints_vs_stores/checkpoint_demo.py`](src/checkpoints_vs_stores/checkpoint_demo.py)
 
-### 2. Store demo
+## Demo 2: stores share memory across threads
 
 ```bash
 python -m checkpoints_vs_stores.demo store
 ```
 
-What it proves:
+Output (from
+[`artifacts/sample-output/store_demo.txt`](artifacts/sample-output/store_demo.txt)):
 
-- `thread-a`, `user-ada`: stores `favorite_language=Python`.
-- `thread-b`, same `user_id`: recalls Python from the store, even though it is a new thread.
-- `thread-c`, `user-grace`: cannot recall Python because it is a different namespace.
+```text
+thread-a / user-ada:
+  Stored long-term memory: favorite_language=Python for user_id=user-ada.
+
+thread-b / user-ada:
+  Your favorite language is Python. I found that in the Store, not this thread.
+
+thread-c / user-grace:
+  I don't have a favorite language for this user in the Store.
+```
+
+`thread-b` is a brand-new thread, yet it recalls Python because the store
+namespace `(user-ada, "profile")` is shared across threads. `user-grace` has a
+different namespace, so she gets nothing.
+
+```mermaid
+flowchart LR
+  A[Thread A] --> G[Graph node]
+  G --> P[Store put]
+  P --> NS[(Namespace: user-ada/profile)]
+  NS --> K[favorite_language = Python]
+  B[Thread B] --> G2[Graph node]
+  G2 --> Q[Store get]
+  Q --> NS
+  C[Thread C, user-grace] -. different namespace .-> Empty[No memory]
+```
 
 Code: [`src/checkpoints_vs_stores/store_demo.py`](src/checkpoints_vs_stores/store_demo.py)
 
-### 3. Combined demo
+## Demo 3: both layers together
 
 ```bash
 python -m checkpoints_vs_stores.demo both
 ```
 
-What it proves:
+The combined demo compiles one graph with both `checkpointer=...` and
+`store=...`, the way production agents usually run, and shows that:
 
-- Checkpointed state remains separate per thread.
-- Store memory is shared by namespace.
-- Real agent apps often compile with both `checkpointer=...` and `store=...`.
+- checkpointed state stays separate per thread, and
+- store memory is shared by namespace.
 
+Full output:
+[`artifacts/sample-output/combined_demo.txt`](artifacts/sample-output/combined_demo.txt).
 Code: [`src/checkpoints_vs_stores/combined_demo.py`](src/checkpoints_vs_stores/combined_demo.py)
 
----
-
-## Example terminal artifact
-
-<p align="center">
-  <img src="docs/assets/terminal-demo.svg" alt="Generated terminal output artifact" width="100%">
-</p>
-
-Generated files live in [`artifacts/`](artifacts/):
-
-- [`artifacts/sample-output/checkpoint_demo.txt`](artifacts/sample-output/checkpoint_demo.txt)
-- [`artifacts/sample-output/store_demo.txt`](artifacts/sample-output/store_demo.txt)
-- [`artifacts/sample-output/combined_demo.txt`](artifacts/sample-output/combined_demo.txt)
-- [`artifacts/comparison-matrix.csv`](artifacts/comparison-matrix.csv)
-- [`artifacts/demo-summary.json`](artifacts/demo-summary.json)
-
-Regenerate them with:
-
-```bash
-python scripts/generate_artifacts.py
+```mermaid
+flowchart TB
+  subgraph ThreadScoped[Checkpoint layer]
+    CP[(Checkpointer)]
+    CP --> TH1[thread-alpha snapshots]
+    CP --> TH2[thread-beta snapshots]
+  end
+  subgraph CrossThread[Store layer]
+    ST[(Store)]
+    ST --> U1[user-ada/profile]
+    ST --> U2[user-grace/profile]
+  end
+  Graph[LangGraph app] --> CP
+  Graph --> ST
+  User[Runtime context: user_id] --> Graph
+  Config[Config: thread_id] --> Graph
 ```
 
----
+## Generated artifacts
+
+`make artifacts` (or `python scripts/generate_artifacts.py`) reruns all three
+demos and rewrites:
+
+- [`artifacts/sample-output/`](artifacts/sample-output/) — the outputs quoted
+  above
+- [`artifacts/demo-summary.json`](artifacts/demo-summary.json) —
+  machine-readable results
+- [`artifacts/comparison-matrix.csv`](artifacts/comparison-matrix.csv) — the
+  comparison table as data
+
+Checkpoint ids and timestamps are redacted during generation, so the committed
+files are byte-stable across reruns.
 
 ## Repo layout
 
 ```text
 .
-├── .gitlab-ci.yml                       # GitLab pipeline: tests + artifact rendering
+├── .gitlab-ci.yml                       # Pipeline: lint + tests + artifact rendering
 ├── artifacts/                           # Generated demo evidence
-├── diagrams/                            # Mermaid source diagrams
+├── diagrams/                            # Mermaid diagram sources
 ├── docs/                                # Concept notes, runbook, production notes
-│   └── assets/                          # SVG diagrams/posters
-├── scripts/generate_artifacts.py        # Rebuild text/JSON/CSV/SVG artifacts
-├── src/checkpoints_vs_stores/           # Real LangGraph demos
+├── scripts/generate_artifacts.py        # Rebuild text/JSON/CSV artifacts
+├── src/checkpoints_vs_stores/           # The LangGraph demos
 └── tests/                               # Pytest coverage for the behavior
 ```
 
----
+## CI
 
-## GitLab pipeline
+The GitLab pipeline runs three jobs: `lint` (ruff check + format),
+`unit_tests` (pytest), and `render_demo_artifacts` (reruns the demos and
+uploads `artifacts/`).
 
-The included `.gitlab-ci.yml` has two stages:
-
-1. `unit_tests`: install the package and run `pytest`.
-2. `render_demo_artifacts`: regenerate artifacts and upload `artifacts/` + `docs/assets/` as GitLab job artifacts.
-
-Push it like this:
-
-```bash
-git remote add origin git@gitlab.com:<namespace>/langgraph-checkpoints-vs-stores.git
-git push -u origin main
-```
-
----
-
-## Source references
-
-This repo targets the current LangGraph persistence model documented by LangChain:
+## References
 
 - Persistence overview: <https://docs.langchain.com/oss/python/langgraph/persistence>
 - Checkpointers: <https://docs.langchain.com/oss/python/langgraph/checkpointers>
@@ -181,13 +201,6 @@ This repo targets the current LangGraph persistence model documented by LangChai
 - Memory guide: <https://docs.langchain.com/oss/python/langgraph/add-memory>
 - PyPI package: <https://pypi.org/project/langgraph/>
 
----
+## License
 
-## Tiny mental model
-
-```text
-thread_id ──▶ checkpointer ──▶ "Where is this graph thread right now?"
-user_id   ──▶ store        ──▶ "What durable facts do we know about this user?"
-```
-
-That is the whole repo.
+[MIT](LICENSE)

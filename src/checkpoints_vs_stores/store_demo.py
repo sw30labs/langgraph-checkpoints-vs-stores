@@ -117,9 +117,7 @@ def run_store_story() -> dict[str, Any]:
     thread_b = {"configurable": {"thread_id": "thread-b"}}
     thread_c = {"configurable": {"thread_id": "thread-c"}}
 
-    first = graph.invoke(
-        {"user_message": "my favorite language is Python"}, thread_a, context=ada
-    )
+    first = graph.invoke({"user_message": "my favorite language is Python"}, thread_a, context=ada)
     second_same_user_new_thread = graph.invoke(
         {"user_message": "what language do I like?"}, thread_b, context=ada
     )
