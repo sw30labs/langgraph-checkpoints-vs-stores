@@ -35,13 +35,14 @@ echo "==> Installing package + dev tools"
 .venv/bin/python -m pip install --quiet ".[dev]"
 
 echo "==> Lint (ruff)"
-.venv/bin/ruff check src tests scripts
-.venv/bin/ruff format --check src tests scripts
+.venv/bin/ruff check src tests scripts examples
+.venv/bin/ruff format --check src tests scripts examples
 
 echo "==> Tests (pytest)"
 .venv/bin/python -m pytest
 
 echo "==> Demos"
-.venv/bin/python -m checkpoints_vs_stores.demo all --no-color
+# Rich auto-detects the terminal: colored TUI panels on a TTY, plain when piped.
+.venv/bin/python -m checkpoints_vs_stores.demo all
 
 echo "==> All good: lint clean, tests green, demos ran."

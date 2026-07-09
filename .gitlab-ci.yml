@@ -17,8 +17,8 @@ lint:
   extends: .python_job
   stage: test
   script:
-    - ruff check src tests scripts
-    - ruff format --check src tests scripts
+    - ruff check src tests scripts examples
+    - ruff format --check src tests scripts examples
 
 unit_tests:
   extends: .python_job
