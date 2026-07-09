@@ -1,0 +1,6 @@
+dimension,checkpoint,store
+main_purpose,Save graph state snapshots so a thread can resume or be inspected.,Save application-defined key-value data for durable memory.
+scope,Single thread_id lineage.,"Namespace can be shared across threads, users, tenants, or apps."
+owned_by,LangGraph runtime writes checkpoints when configured.,Application nodes decide what to put/get/search/delete.
+demo_proof,thread-alpha remembers Ada; thread-fresh does not.,thread-b recalls Python for user-ada; user-grace does not.
+production_backend,"Use persistent checkpointer, e.g. Postgres or SQLite.","Use persistent store, e.g. Postgres, MongoDB, or Redis."

@@ -1,0 +1,19 @@
+# Store demo
+
+Lesson: Stores are cross-thread when the namespace is shared.
+
+thread-a / user-ada:
+  Stored long-term memory: favorite_language=Python for user_id=user-ada.
+
+thread-b / user-ada:
+  Your favorite language is Python. I found that in the Store, not this thread.
+
+thread-c / user-grace:
+  I don't have a favorite language for this user in the Store.
+
+user-ada store items:
+  - ['user-ada', 'profile'] / favorite_language = {'value': 'Python', 'why': 'Captured from an explicit user preference.'}
+
+Thread notes prove thread state is still separate:
+  thread-a notes: ['user-ada: my favorite language is Python -> Stored long-term memory: favorite_language=Python for user_id=user-ada.']
+  thread-b notes: ['user-ada: what language do I like? -> Your favorite language is Python. I found that in the Store, not this thread.']

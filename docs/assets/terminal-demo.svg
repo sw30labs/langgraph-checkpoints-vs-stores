@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="624" viewBox="0 0 1100 624" role="img" aria-label="Demo terminal output">
+  <defs>
+    <linearGradient id="termBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <style>
+      .chrome{fill:#0f172a;stroke:#334155;stroke-width:1.2}
+      .dot1{fill:#ef4444} .dot2{fill:#f59e0b} .dot3{fill:#22c55e}
+      .title{font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:700;fill:#cbd5e1}
+      .line{font-family:'JetBrains Mono','Fira Code',monospace;font-size:14px;fill:#d1fae5}
+    </style>
+  </defs>
+  <rect width="1100" height="624" fill="url(#termBg)" rx="24"/>
+  <rect x="22" y="22" width="1056" height="44" class="chrome" rx="16"/>
+  <circle cx="52" cy="44" r="7" class="dot1"/>
+  <circle cx="76" cy="44" r="7" class="dot2"/>
+  <circle cx="100" cy="44" r="7" class="dot3"/>
+  <text x="132" y="49" class="title">python -m checkpoints_vs_stores.demo all --no-color</text>
+  <text x="42" y="92" class="line"># Checkpoint demo</text>
+<text x="42" y="114" class="line"></text>
+<text x="42" y="136" class="line">Lesson: Checkpoints are scoped to a thread_id.</text>
+<text x="42" y="158" class="line"></text>
+<text x="42" y="180" class="line">thread-alpha / invoke #1:</text>
+<text x="42" y="202" class="line">  Checkpoint now has 1 durable-in-thread fact(s).</text>
+<text x="42" y="224" class="line"></text>
+<text x="42" y="246" class="line">thread-alpha / invoke #2:</text>
+<text x="42" y="268" class="line">  Your name is Ada. I know because this thread has a checkpoint.</text>
+<text x="42" y="290" class="line"></text>
+<text x="42" y="312" class="line">thread-fresh / invoke #1:</text>
+<text x="42" y="334" class="line">  I don&#x27;t know your name in this thread.</text>
+<text x="42" y="356" class="line"></text>
+<text x="42" y="378" class="line">thread-alpha facts: [&#x27;name=Ada&#x27;]</text>
+<text x="42" y="400" class="line">thread-alpha checkpoint count: 8</text>
+<text x="42" y="422" class="line">latest checkpoint id: 1f17bdf3-c1d2-61d8-8006-c33e1943b5c3</text>
+<text x="42" y="444" class="line"></text>
+<text x="42" y="466" class="line">Timeline:</text>
+<text x="42" y="488" class="line">  - USER: hi, my name is Ada</text>
+<text x="42" y="510" class="line">  - BOT: Checkpoint now has 1 durable-in-thread fact(s).</text>
+<text x="42" y="532" class="line">  - USER: what is my name?</text>
+<text x="42" y="554" class="line">  - BOT: Your name is Ada. I know because this thread has a checkpoint.</text>
+<text x="42" y="576" class="line"></text>
+<text x="42" y="598" class="line"># Store demo</text>
+</svg>

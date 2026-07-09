@@ -1,0 +1,13 @@
+# Combined demo
+
+Lesson: Use both: checkpoint for per-thread state, store for durable memory.
+
+thread-b asks in a new thread:
+  Your favorite language is Python. I found that in the Store, not this thread.
+
+Checkpoint state is separate:
+  thread-a values: {'user_message': 'my favorite language is Python', 'reply': 'Stored long-term memory: favorite_language=Python for user_id=user-ada.', 'thread_notes': ['user-ada: my favorite language is Python -> Stored long-term memory: favorite_language=Python for user_id=user-ada.']}
+  thread-b values: {'user_message': 'what language do I like?', 'reply': 'Your favorite language is Python. I found that in the Store, not this thread.', 'thread_notes': ['user-ada: what language do I like? -> Your favorite language is Python. I found that in the Store, not this thread.']}
+
+Store memory is shared by namespace:
+  - ['user-ada', 'profile'] / favorite_language = {'value': 'Python', 'why': 'Captured from an explicit user preference.'}

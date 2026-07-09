@@ -1,0 +1,22 @@
+# Checkpoint demo
+
+Lesson: Checkpoints are scoped to a thread_id.
+
+thread-alpha / invoke #1:
+  Checkpoint now has 1 durable-in-thread fact(s).
+
+thread-alpha / invoke #2:
+  Your name is Ada. I know because this thread has a checkpoint.
+
+thread-fresh / invoke #1:
+  I don't know your name in this thread.
+
+thread-alpha facts: ['name=Ada']
+thread-alpha checkpoint count: 8
+latest checkpoint id: 1f17bdf3-c1d2-61d8-8006-c33e1943b5c3
+
+Timeline:
+  - USER: hi, my name is Ada
+  - BOT: Checkpoint now has 1 durable-in-thread fact(s).
+  - USER: what is my name?
+  - BOT: Your name is Ada. I know because this thread has a checkpoint.
