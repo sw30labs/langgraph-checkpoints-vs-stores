@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langgraph-checkpoints-vs-stores"
+version = "0.1.0"
+description = "Runnable LangGraph examples comparing checkpoints and stores."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "OpenAI Repo Bot"}]
+dependencies = [
+  "langgraph>=1.2.8,<2.0.0",
+  "rich>=13.7,<15",
+  "typing-extensions>=4.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "ruff>=0.6",
+]
+
+[project.scripts]
+lg-memory-demo = "checkpoints_vs_stores.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
