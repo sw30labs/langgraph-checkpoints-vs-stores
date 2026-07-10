@@ -7,6 +7,13 @@
 [![Tested with pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC?logo=pytest&logoColor=white)](tests/)
 ![Runs offline](https://img.shields.io/badge/LLM%20calls-none%2C%20runs%20offline-blueviolet)
 
+> [!TIP]
+> Wondering **when you'd actually use checkpoints or stores**? Read
+> [README-USECASES-EXAMPLE.md](README-USECASES-EXAMPLE.md) — a
+> source-verified guide mapping real-world scenarios (human-in-the-loop
+> approvals, crash recovery, semantic memory) and production case studies
+> (Replit, Klarna, Uber, LinkedIn) to the right persistence mechanism.
+
 Runnable, deterministic examples that show the difference between LangGraph
 **checkpoints** (thread-scoped graph state) and **stores** (cross-thread,
 long-term memory), using real `StateGraph`, `InMemorySaver`, and
