@@ -45,4 +45,7 @@ echo "==> Demos"
 # Rich auto-detects the terminal: colored TUI panels on a TTY, plain when piped.
 .venv/bin/python -m checkpoints_vs_stores.demo all
 
+echo "==> Chapter 2 (postgres/redis rows need: docker compose up -d)"
+.venv/bin/python -m checkpoints_vs_stores.chapter2 all
+
 echo "==> All good: lint clean, tests green, demos ran."

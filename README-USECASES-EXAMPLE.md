@@ -245,7 +245,10 @@ after being enabled.
 | Conversation continuity (1) | [`checkpoint_demo.py`](src/checkpoints_vs_stores/checkpoint_demo.py), [`examples/01_checkpointer_minimal.py`](examples/01_checkpointer_minimal.py) |
 | Preferences across sessions (5) | [`store_demo.py`](src/checkpoints_vs_stores/store_demo.py), [`examples/02_store_minimal.py`](examples/02_store_minimal.py) |
 | Both layers in one agent (8 + 1) | [`combined_demo.py`](src/checkpoints_vs_stores/combined_demo.py), [`examples/03_both_minimal.py`](examples/03_both_minimal.py) |
-| HITL, time travel, semantic search, real backends | Planned: Chapter 2 |
+| Crash recovery / durable execution (3) | [`resume_demo.py`](src/checkpoints_vs_stores/resume_demo.py) — kill-and-resume across OS processes |
+| Semantic memory search (7) | [`search_demo.py`](src/checkpoints_vs_stores/search_demo.py) — offline `store.search(query=...)` |
+| Production backends (Postgres/Redis/SQLite) | [`matrix_demo.py`](src/checkpoints_vs_stores/matrix_demo.py) + [`peek_demo.py`](src/checkpoints_vs_stores/peek_demo.py) — see the raw rows |
+| HITL and time travel | Planned: Chapter 3 |
 
 ## Watch / read next
 

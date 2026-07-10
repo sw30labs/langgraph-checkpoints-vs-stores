@@ -194,6 +194,47 @@ flowchart TB
   Config[Config: thread_id] --> Graph
 ```
 
+## Chapter 2: production backends
+
+Chapter 1's memory dies with the process (`InMemorySaver`/`InMemoryStore`).
+Chapter 2 makes it survive — same graphs, real backends:
+
+```bash
+python -m checkpoints_vs_stores.chapter2 all   # or: lg-memory-demo2 all
+```
+
+Four demos, rendered in the same panel TUI:
+
+- **Kill-and-resume** ([`resume_demo.py`](src/checkpoints_vs_stores/resume_demo.py)) —
+  process A learns your name and exits; process B (a different PID, verified)
+  resumes the same `thread_id` from a SQLite file and answers. The demo
+  in-memory savers can never do this.
+- **Inside the database** ([`peek_demo.py`](src/checkpoints_vs_stores/peek_demo.py)) —
+  one SQLite file holding both layers, read back with plain SQL: checkpoint
+  rows are opaque msgpack snapshots owned by the framework; store rows are
+  readable JSON you designed.
+- **Semantic search** ([`search_demo.py`](src/checkpoints_vs_stores/search_demo.py)) —
+  `store.search(namespace, query="what is the user's cat called?")` ranks
+  memories by meaning. Deterministic toy embeddings keep it offline; the
+  index config and API are exactly what you'd use with a real model.
+- **Backend matrix** ([`matrix_demo.py`](src/checkpoints_vs_stores/matrix_demo.py)) —
+  the same write-in-thread-a / recall-in-thread-b graph runs unchanged on all
+  four backends via [`backends.py`](src/checkpoints_vs_stores/backends.py):
+
+| Backend | Works out of the box? | Reach for it when |
+|---|---|---|
+| `memory` | yes | dev and tests: zero setup, gone on restart |
+| `sqlite` | yes | local apps and PoCs: one durable file, no server |
+| `postgres` | `docker compose up -d` | production default: one database for both layers |
+| `redis` | `docker compose up -d` | low latency, native TTLs (Redis 8+ bundles JSON + search) |
+
+Postgres and Redis run from [`docker-compose.yml`](docker-compose.yml) on
+non-standard ports (5442, 6390) so they never clash with local servers; the
+matrix reports them as `unreachable` (with the command to fix it) instead of
+failing when they're down. Their tests auto-skip locally and run in CI
+against real service containers. Override connection URLs with
+`LG_DEMO_POSTGRES_URL` / `LG_DEMO_REDIS_URL`.
+
 ## Use it in your own code
 
 The demo modules carry demo scaffolding (result dicts, formatters), so
@@ -242,6 +283,7 @@ files are byte-stable across reruns.
 ├── .github/workflows/ci.yml             # Pipeline: lint + tests + artifact rendering
 ├── artifacts/                           # Generated demo evidence
 ├── diagrams/                            # Mermaid diagram sources
+├── docker-compose.yml                   # Chapter 2 backends: Postgres + Redis
 ├── docs/                                # Concept notes, runbook, production notes
 ├── examples/                            # Minimal copy-paste recipes
 ├── scripts/generate_artifacts.py        # Rebuild text/JSON/CSV artifacts
@@ -251,9 +293,11 @@ files are byte-stable across reruns.
 
 ## CI
 
-GitHub Actions runs three jobs on every push and pull request: `lint` (ruff
-check + format), `tests` (pytest on Python 3.10 and 3.13), and
-`demo-artifacts` (reruns the demos and uploads `artifacts/`).
+GitHub Actions runs four jobs on every push and pull request: `lint` (ruff
+check + format), `tests` (pytest on Python 3.10 and 3.13),
+`backend-integration` (chapter 2 tests against real Postgres and Redis
+service containers), and `demo-artifacts` (reruns the demos and uploads
+`artifacts/`).
 
 ## References
 

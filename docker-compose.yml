@@ -1,0 +1,25 @@
+# Optional backends for chapter 2 (`python -m checkpoints_vs_stores.chapter2 matrix`).
+# Non-standard host ports so nothing clashes with locally installed servers.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  redis:
+    # Redis 8 bundles the JSON and search modules the LangGraph integration needs.
+    image: redis:8
+    ports:
+      - "6390:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 30

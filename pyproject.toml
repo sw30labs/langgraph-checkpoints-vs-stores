@@ -12,18 +12,26 @@ license = {text = "Apache-2.0"}
 authors = [{name = "Nic Cravino"}]
 dependencies = [
   "langgraph>=1.2.8,<2.0.0",
+  "langgraph-checkpoint-sqlite>=3.1,<4",
   "rich>=13.7,<15",
   "typing-extensions>=4.12",
 ]
 
 [project.optional-dependencies]
+backends = [
+  "langgraph-checkpoint-postgres>=3.1,<4",
+  "langgraph-checkpoint-redis>=0.5,<1",
+  "psycopg[binary]>=3.2",
+]
 dev = [
+  "langgraph-checkpoints-vs-stores[backends]",
   "pytest>=8.3",
   "ruff>=0.6",
 ]
 
 [project.scripts]
 lg-memory-demo = "checkpoints_vs_stores.demo:main"
+lg-memory-demo2 = "checkpoints_vs_stores.chapter2:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

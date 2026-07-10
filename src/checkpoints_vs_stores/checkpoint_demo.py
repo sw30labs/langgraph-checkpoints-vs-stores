@@ -59,8 +59,12 @@ def answer_from_thread(state: ThreadState) -> ThreadState:
     return {"reply": reply, "timeline": [f"BOT: {reply}"]}
 
 
-def build_checkpoint_graph():
-    """Build a graph compiled with an in-memory checkpointer."""
+def build_checkpoint_graph(checkpointer=None):
+    """Build the demo graph; defaults to an in-memory checkpointer.
+
+    Chapter 2 passes persistent checkpointers (SQLite, Postgres, Redis) here —
+    the graph itself never changes.
+    """
 
     builder = StateGraph(ThreadState)
     builder.add_node("remember_in_thread", remember_in_thread)
@@ -68,7 +72,7 @@ def build_checkpoint_graph():
     builder.add_edge(START, "remember_in_thread")
     builder.add_edge("remember_in_thread", "answer_from_thread")
     builder.add_edge("answer_from_thread", END)
-    return builder.compile(checkpointer=InMemorySaver())
+    return builder.compile(checkpointer=checkpointer or InMemorySaver())
 
 
 def run_checkpoint_story() -> dict[str, Any]:

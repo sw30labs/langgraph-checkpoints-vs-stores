@@ -1,6 +1,6 @@
 # Production notes
 
-This project intentionally uses `InMemorySaver` and `InMemoryStore` so the examples run locally without databases or API keys.
+Chapter 1 intentionally uses `InMemorySaver` and `InMemoryStore` so the examples run locally without databases or API keys. Chapter 2 (`python -m checkpoints_vs_stores.chapter2 all`) demonstrates the production swaps end to end: SQLite kill-and-resume, raw database rows, semantic search, and the same graph on Postgres and Redis via `docker compose up -d`.
 
 For real deployments:
 

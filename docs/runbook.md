@@ -26,6 +26,18 @@ python scripts/generate_artifacts.py
 pytest
 ```
 
+Postgres/Redis tests auto-skip unless the servers are up.
+
+## Chapter 2: production backends
+
+```bash
+python -m checkpoints_vs_stores.chapter2 all   # resume, peek, search, matrix
+
+docker compose up -d --wait                    # optional: postgres + redis
+python -m checkpoints_vs_stores.chapter2 matrix
+docker compose down -v                         # stop and wipe the demo servers
+```
+
 ## CI
 
 The repository lives at
