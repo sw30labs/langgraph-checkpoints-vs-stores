@@ -26,13 +26,10 @@ python scripts/generate_artifacts.py
 pytest
 ```
 
-## GitLab
+## CI
 
-Create a blank GitLab project, then push this repository:
-
-```bash
-git remote add origin git@gitlab.com:<namespace>/langgraph-checkpoints-vs-stores.git
-git push -u origin main
-```
-
-The pipeline runs tests and regenerates demo artifacts.
+The repository lives at
+<https://github.com/sw30labs/langgraph-checkpoints-vs-stores>. GitHub Actions
+([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)) lints, tests on
+Python 3.10 and 3.13, and regenerates demo artifacts on every push and pull
+request.

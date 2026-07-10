@@ -1,5 +1,6 @@
 # LangGraph Checkpoints vs Stores
 
+[![CI](https://github.com/sw30labs/langgraph-checkpoints-vs-stores/actions/workflows/ci.yml/badge.svg)](https://github.com/sw30labs/langgraph-checkpoints-vs-stores/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![LangGraph ≥1.2](https://img.shields.io/badge/langgraph-%E2%89%A51.2-1C3C3C?logo=langchain&logoColor=white)](https://pypi.org/project/langgraph/)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
@@ -238,7 +239,7 @@ files are byte-stable across reruns.
 
 ```text
 .
-├── .gitlab-ci.yml                       # Pipeline: lint + tests + artifact rendering
+├── .github/workflows/ci.yml             # Pipeline: lint + tests + artifact rendering
 ├── artifacts/                           # Generated demo evidence
 ├── diagrams/                            # Mermaid diagram sources
 ├── docs/                                # Concept notes, runbook, production notes
@@ -250,9 +251,9 @@ files are byte-stable across reruns.
 
 ## CI
 
-The GitLab pipeline runs three jobs: `lint` (ruff check + format),
-`unit_tests` (pytest), and `render_demo_artifacts` (reruns the demos and
-uploads `artifacts/`).
+GitHub Actions runs three jobs on every push and pull request: `lint` (ruff
+check + format), `tests` (pytest on Python 3.10 and 3.13), and
+`demo-artifacts` (reruns the demos and uploads `artifacts/`).
 
 ## References
 
