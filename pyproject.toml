@@ -32,6 +32,7 @@ dev = [
 [project.scripts]
 lg-memory-demo = "checkpoints_vs_stores.demo:main"
 lg-memory-demo2 = "checkpoints_vs_stores.chapter2:main"
+lg-memory-demo3 = "checkpoints_vs_stores.chapter3:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

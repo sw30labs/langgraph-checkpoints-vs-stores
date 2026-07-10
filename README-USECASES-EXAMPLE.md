@@ -248,7 +248,8 @@ after being enabled.
 | Crash recovery / durable execution (3) | [`resume_demo.py`](src/checkpoints_vs_stores/resume_demo.py) — kill-and-resume across OS processes |
 | Semantic memory search (7) | [`search_demo.py`](src/checkpoints_vs_stores/search_demo.py) — offline `store.search(query=...)` |
 | Production backends (Postgres/Redis/SQLite) | [`matrix_demo.py`](src/checkpoints_vs_stores/matrix_demo.py) + [`peek_demo.py`](src/checkpoints_vs_stores/peek_demo.py) — see the raw rows |
-| HITL and time travel | Planned: Chapter 3 |
+| Human-in-the-loop approvals (2) | [`hitl_demo.py`](src/checkpoints_vs_stores/hitl_demo.py) — `interrupt()`, durable pause, resume in a new runtime |
+| Time travel: replay and fork (4) | [`timetravel_demo.py`](src/checkpoints_vs_stores/timetravel_demo.py) — two timelines on one thread |
 
 ## Watch / read next
 

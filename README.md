@@ -235,6 +235,28 @@ failing when they're down. Their tests auto-skip locally and run in CI
 against real service containers. Override connection URLs with
 `LG_DEMO_POSTGRES_URL` / `LG_DEMO_REDIS_URL`.
 
+## Chapter 3: human-in-the-loop and time travel
+
+The two remaining canonical checkpoint patterns — the ones enterprises ask
+about first (see the [use-cases guide](README-USECASES-EXAMPLE.md)):
+
+```bash
+python -m checkpoints_vs_stores.chapter3 all   # or: lg-memory-demo3 all
+```
+
+- **Human-in-the-loop** ([`hitl_demo.py`](src/checkpoints_vs_stores/hitl_demo.py)) —
+  a refund agent calls `interrupt()` before the irreversible step; the paused
+  state lands in SQLite, and a *rebuilt* graph (fresh objects, same file — as
+  after a restart) resumes it with `Command(resume={"approve": ...})`. Both
+  the approved and rejected paths run, and the demo counts node entries to
+  prove the documented gotcha: **resume re-executes the interrupted node from
+  its start**, so pre-interrupt side effects must be idempotent.
+- **Time travel** ([`timetravel_demo.py`](src/checkpoints_vs_stores/timetravel_demo.py)) —
+  after a conversation, the demo picks the checkpoint just before an answer
+  and does both operations: **replay** (same reply reproduced) and **fork**
+  (`update_state` edits the past, the new branch answers differently). The
+  thread's history keeps both timelines — an audit trail for free.
+
 ## Use it in your own code
 
 The demo modules carry demo scaffolding (result dicts, formatters), so

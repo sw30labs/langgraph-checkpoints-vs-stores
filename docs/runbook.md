@@ -38,6 +38,12 @@ python -m checkpoints_vs_stores.chapter2 matrix
 docker compose down -v                         # stop and wipe the demo servers
 ```
 
+## Chapter 3: human-in-the-loop and time travel
+
+```bash
+python -m checkpoints_vs_stores.chapter3 all   # interrupt/resume + replay/fork
+```
+
 ## CI
 
 The repository lives at

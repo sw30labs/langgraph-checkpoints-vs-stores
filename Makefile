@@ -1,4 +1,4 @@
-.PHONY: install test demo checkpoint store both chapter2 backends-up backends-down artifacts clean
+.PHONY: install test demo checkpoint store both chapter2 chapter3 backends-up backends-down artifacts clean
 
 install:
 	python -m pip install -e ".[dev]"
@@ -20,6 +20,9 @@ both:
 
 chapter2:
 	python -m checkpoints_vs_stores.chapter2 all
+
+chapter3:
+	python -m checkpoints_vs_stores.chapter3 all
 
 backends-up:
 	docker compose up -d --wait

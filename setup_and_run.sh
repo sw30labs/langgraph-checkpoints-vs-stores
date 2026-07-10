@@ -48,4 +48,7 @@ echo "==> Demos"
 echo "==> Chapter 2 (postgres/redis rows need: docker compose up -d)"
 .venv/bin/python -m checkpoints_vs_stores.chapter2 all
 
+echo "==> Chapter 3"
+.venv/bin/python -m checkpoints_vs_stores.chapter3 all
+
 echo "==> All good: lint clean, tests green, demos ran."
