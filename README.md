@@ -1,5 +1,12 @@
 # LangGraph Checkpoints vs Stores
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![LangGraph ≥1.2](https://img.shields.io/badge/langgraph-%E2%89%A51.2-1C3C3C?logo=langchain&logoColor=white)](https://pypi.org/project/langgraph/)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
+[![Code style: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Tested with pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC?logo=pytest&logoColor=white)](tests/)
+![Runs offline](https://img.shields.io/badge/LLM%20calls-none%2C%20runs%20offline-blueviolet)
+
 Runnable, deterministic examples that show the difference between LangGraph
 **checkpoints** (thread-scoped graph state) and **stores** (cross-thread,
 long-term memory), using real `StateGraph`, `InMemorySaver`, and
@@ -250,4 +257,4 @@ uploads `artifacts/`).
 
 ## License
 
-[MIT](LICENSE)
+[Apache 2.0](LICENSE)
