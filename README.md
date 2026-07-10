@@ -37,7 +37,10 @@ flowchart TD
   Q -->|"shipping a production agent"| BOTH["Both:<br/>compile(checkpointer=..., store=...)"]
 ```
 
-The same decision tree is printed at the end of `demo all`.
+The same decision tree is printed at the end of `demo all`. For the
+real-world scenarios behind each branch — human-in-the-loop approvals, crash
+recovery, semantic memory, and who runs this in production — see
+[README-USECASES-EXAMPLE.md](README-USECASES-EXAMPLE.md).
 
 ## Quickstart
 
