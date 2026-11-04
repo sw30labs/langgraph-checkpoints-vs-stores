@@ -11,22 +11,22 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 authors = [{name = "Nic Cravino"}]
 dependencies = [
-  "langgraph>=1.2.8,<2.0.0",
-  "langgraph-checkpoint-sqlite>=3.1,<4",
-  "rich>=13.7,<15",
-  "typing-extensions>=4.12",
+  "langgraph==1.2.19",
+  "langgraph-checkpoint-sqlite==3.1.3",
+  "rich==14.3.4",
+  "typing-extensions==4.16.0",
 ]
 
 [project.optional-dependencies]
 backends = [
-  "langgraph-checkpoint-postgres>=3.1,<4",
-  "langgraph-checkpoint-redis>=0.5,<1",
-  "psycopg[binary]>=3.2",
+  "langgraph-checkpoint-postgres==3.2.0",
+  "langgraph-checkpoint-redis==0.6.0",
+  "psycopg[binary]==3.3.8",
 ]
 dev = [
   "langgraph-checkpoints-vs-stores[backends]",
-  "pytest>=8.3",
-  "ruff>=0.6",
+  "pytest==9.2.0",
+  "ruff==0.17.3",
 ]
 
 [project.scripts]
