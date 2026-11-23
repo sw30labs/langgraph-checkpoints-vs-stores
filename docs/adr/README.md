@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Written retrospectively on 2026-11-16 from a full read of `main` at `e4d5ee6` (source, tests, config, docs, artifacts and the full git history). Format: Title; Status; Context; Decision; Consequences (positive/negative); Alternatives considered; Evidence. Where a rationale is inferred rather than stated, it is labelled and logged in [`../assumptions.md`](../assumptions.md).
+Written retrospectively on 2026-11-16 from a full read of `main` at `e4d5ee6` (source, tests, config, docs, artifacts and the full git history). Format: Title; Status; Context; Decision; Consequences (positive/negative); Alternatives considered; Evidence. ADR 0016 was added 2026-11-23 as a forward-looking proposal, not a retrospective record. Where a rationale is inferred rather than stated, it is labelled and logged in [`../assumptions.md`](../assumptions.md).
 
 | # | Decision | Status |
 |---|---|---|
@@ -19,5 +19,6 @@ Written retrospectively on 2026-11-16 from a full read of `main` at `e4d5ee6` (s
 | [0013](0013-apache-2-0-license.md) | License: Apache 2.0 (switched from MIT) | Accepted (retrospective) |
 | [0014](0014-src-layout-setuptools-nonedit-bootstrap.md) | src-layout package, Python ≥ 3.10, non-editable bootstrap script | Accepted (retrospective) |
 | [0015](0015-source-verified-use-case-guide.md) | A separate, source-verified use-case guide | Accepted (retrospective) |
+| [0016](0016-langmem-retrieval-patterns.md) | LangMem retrieval patterns for enterprise LangGraph: prompt-function injection primary, gated background consolidation secondary (forward-looking, not evidenced by this repo) | Proposed (2026-11-23) |
 
 To add a decision, copy the format above, take the next number, and add a row here.
